@@ -2,22 +2,31 @@
 
 public class SpawnRoadPart : MonoBehaviour
 {
-    public Transform Point;
-    public GameObject Prefab;
+  public Transform Point;
+  public GameObject[] Prefabs;
+  private GameObject currentPrefab;
+  private int index;
 
-    void OnTriggerEnter(Collider col) {
-        //Debug.Log("enter");
-        if(col.tag == "Player") {
-            Instantiate (Prefab, Point.position, Quaternion.identity);
-        }
-    }
+  private void Start()
+  {
+    index = Random.Range(0, Prefabs.Length);
+    currentPrefab = Prefabs[index];
+  }
 
-    void OnTriggerExit(Collider col) {
-        //Debug.Log("exit");
-        if(col.tag == "Player") {
-            Destroy(transform.parent.gameObject, 0.8f);
-            //Destroy(gameObject);
-            //Destroy(transform.parent.gameObject);
-        }
+  void OnTriggerEnter(Collider col)
+  {
+    if (col.CompareTag("Player"))
+    {
+      Instantiate(currentPrefab, Point.position, Quaternion.identity);
     }
+  }
+
+  void OnTriggerExit(Collider col)
+  {
+    if (col.CompareTag("Player"))
+    {
+      Destroy(gameObject, .8f);
+      Destroy(transform.parent.gameObject, .8f);
+    }
+  }
 }

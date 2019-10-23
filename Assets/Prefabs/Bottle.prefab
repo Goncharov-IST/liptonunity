@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5439050035549445388}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bottle
   m_TagString: Bottle
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5698262967594440891}
   - component: {fileID: 2596730769814707016}
   - component: {fileID: 3076434692678591139}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: model
   m_TagString: Bottle
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6381098}
   - component: {fileID: 6381100}
   - component: {fileID: 6381099}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4764,7 +4764,7 @@ GameObject:
   - component: {fileID: 1072654833}
   - component: {fileID: 1072654835}
   - component: {fileID: 1072654834}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9573,7 +9573,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1850538596}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Run
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9607,7 +9607,7 @@ GameObject:
   - component: {fileID: 2057654416}
   - component: {fileID: 2057654418}
   - component: {fileID: 2057654417}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14420,9 +14420,9 @@ GameObject:
   - component: {fileID: 281079608266444743}
   - component: {fileID: 7564819704076679968}
   - component: {fileID: 7564819704076679969}
-  - component: {fileID: 7564819704076679983}
   - component: {fileID: 1640973131}
-  m_Layer: 8
+  - component: {fileID: 1018197501}
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -14521,23 +14521,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.6}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &7564819704076679983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007002786788670235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 694860069102395c29a4794955a08440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 10
-  dust: {fileID: 7564819703819550825}
-  score: {fileID: 6381100}
-  run: {fileID: 0}
 --- !u!95 &1640973131
 Animator:
   serializedVersion: 3
@@ -14557,6 +14540,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1018197501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007002786788670235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a52d9aba320d861cb60259ada9ecfbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 9.5
+  Score: {fileID: 6381100}
+  Jump: {fileID: 7564819703819550825}
 --- !u!1 &7564819703819550826
 GameObject:
   m_ObjectHideFlags: 0
@@ -14568,7 +14566,7 @@ GameObject:
   - component: {fileID: 7564819703819550827}
   - component: {fileID: 7564819703819550825}
   - component: {fileID: 7564819703819550824}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Jump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
