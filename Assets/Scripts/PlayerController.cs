@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
   private Rigidbody rb;
   private Animator ch_animator;
   bool isGrounded = false;
+  public Swipe swipeControls;
 
   void Start()
   {
@@ -19,60 +20,49 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-    /* Control */
-    if (isGrounded)
+    #region Inputs
+    if (isGrounded && !GameManager.isPaused)
     {
-      /* Keyboard Control */
       ch_animator.SetBool("squat", false);
 
-      if (Input.GetKeyDown(KeyCode.LeftArrow))
+      if (Input.GetKeyDown(KeyCode.LeftArrow) || swipeControls.SwipeLeft)
       {
         if (lane > -1)
         {
           lane--;
         }
       }
-      if (Input.GetKeyDown(KeyCode.RightArrow))
+      if (Input.GetKeyDown(KeyCode.RightArrow) || swipeControls.SwipeRight)
       {
         if (lane < 1)
         {
           lane++;
         }
       }
-      if (Input.GetKeyDown(KeyCode.UpArrow))
+      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
       {
         isGrounded = false;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
       }
-      if (Input.GetKeyDown(KeyCode.DownArrow))
+      if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
       {
         ch_animator.SetBool("squat", true);
       }
-
-      /* Swipe Control */
-      if (Input.touchCount > 0)
-      {
-        Touch touch = Input.GetTouch(0);
-        if (touch.phase == TouchPhase.Began)
-        {
-          if (touch.position.x < Screen.width / 2 && transform.position.x > -1f)
-          {
-            lane--;
-          }
-          if (touch.position.x < Screen.width / 2 && transform.position.x < 1f)
-          {
-            lane++;
-          }
-        }
-      }
     }
+    if (swipeControls.Tap)
+    {
+      Debug.Log("Tap!");
+    }
+    #endregion
 
+    // Movement
     Vector3 newPosition = transform.position;
     newPosition.z = lane;
     transform.position = newPosition;
     transform.Rotate(Vector3.up, .0f);
   }
 
+  #region Collision and Triggers
   private void OnCollisionEnter(Collision other)
   {
     if (other.gameObject.CompareTag("Ground"))
@@ -95,5 +85,6 @@ public class PlayerController : MonoBehaviour
       GameManager.countBottle++;
     }
   }
+  #endregion
 }
 

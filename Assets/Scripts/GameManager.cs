@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
   public GameObject resumeButton;
   public static GameObject pause;
   public static GameObject resume;
+  public static bool isPaused = false;
 
   public Text mileage;
   public Text score;
@@ -54,12 +55,14 @@ public class GameManager : MonoBehaviour
 
   public void ReplyLevel()
   {
+    isPaused = false;
     Time.timeScale = 1;
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
   }
 
   public static void Loss(bool paus, bool res, int time) // Проигрыш
   {
+    isPaused = true;
     Time.timeScale = time;
     pause.SetActive(paus);
     resume.SetActive(res);
@@ -67,12 +70,14 @@ public class GameManager : MonoBehaviour
 
   public void Pause()
   {
+    isPaused = true;
     Time.timeScale = 0;
     pauseLink.SetActive(true);
   }
 
   public void Resume()
   {
+    isPaused = false;
     Time.timeScale = 1;
     pauseLink.SetActive(false);
   }
