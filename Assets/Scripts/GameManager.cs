@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
 
   void Start()
   {
-    Screen.SetResolution(Screen.width, Screen.height, false);
-    QualitySettings.vSyncCount = 0;
+    //Screen.SetResolution(Screen.width, Screen.height, false);
+    //QualitySettings.vSyncCount = 0;
     Application.targetFrameRate = 30;
 
     pause = pauseLink;

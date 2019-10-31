@@ -2,51 +2,44 @@
 
 public class PlayerController : MonoBehaviour
 {
-  public float jumpForce = 9.5f;
-  private int lane;
+  private const float LANE_DISTANCE = 3.0f;
+  private const float TURN_SPEED = 0.5f;
+
+  // Movement
+  public float jumpForce = 4.0f;
+  private float gravity = 10.0f;
+  private float verticalVelocity;
+  private float speed = 10.0f;
+  private int desiredLane = 1; // 0 - Left, 1 = Middle, 2 - Right
+
   public ParticleSystem Score;
   public ParticleSystem Jump;
-  private Rigidbody rb;
+
   private Animator ch_animator;
-  bool isGrounded = false;
+  private CharacterController ch_controller;
   public Swipe swipeControls;
 
-  void Start()
+  private void Start()
   {
-    rb = GetComponent<Rigidbody>();
+    ch_controller = GetComponent<CharacterController>();
     ch_animator = GetComponent<Animator>();
-    lane = 0;
   }
 
-  void Update()
+  private void Update()
   {
     #region Inputs
-    if (isGrounded && !GameManager.isPaused)
+    if (!GameManager.isPaused)
     {
       ch_animator.SetBool("squat", false);
+      ch_animator.SetBool("jump", false);
 
       if (Input.GetKeyDown(KeyCode.LeftArrow) || swipeControls.SwipeLeft)
       {
-        if (lane > -1)
-        {
-          lane--;
-        }
+        MoveLane(false);
       }
       if (Input.GetKeyDown(KeyCode.RightArrow) || swipeControls.SwipeRight)
       {
-        if (lane < 1)
-        {
-          lane++;
-        }
-      }
-      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
-      {
-        isGrounded = false;
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-      }
-      if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
-      {
-        ch_animator.SetBool("squat", true);
+        MoveLane(true);
       }
     }
     if (swipeControls.Tap)
@@ -55,22 +48,78 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Movement params
+    Vector3 targetPosition = transform.position.x * Vector3.forward;
+    if (desiredLane == 0)
+      targetPosition += Vector3.left * LANE_DISTANCE;
+    else if (desiredLane == 2)
+      targetPosition += Vector3.right * LANE_DISTANCE;
+
+    Vector3 moveVector = Vector3.zero;
+    moveVector.x = (targetPosition - transform.position).x * 10.0f;
+    if (ch_controller.isGrounded)
+    {
+      verticalVelocity = -0.1f;
+      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
+      {
+        verticalVelocity = jumpForce;
+        ch_animator.SetBool("jump", true);
+      }
+      else if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
+      {
+        StartSliding();
+        Invoke("StopSliding", 1.0f);
+      }
+    }
+    else
+    {
+      verticalVelocity -= (gravity * Time.deltaTime);
+      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
+      {
+        verticalVelocity = -jumpForce;
+      }
+    }
+    moveVector.y = verticalVelocity;
+    moveVector.z = speed;
+    #endregion
+
     // Movement
-    Vector3 newPosition = transform.position;
-    newPosition.z = lane;
-    transform.position = newPosition;
-    transform.Rotate(Vector3.up, .0f);
+    ch_controller.Move(moveVector * Time.deltaTime);
+    Vector3 dir = ch_controller.velocity;
+    if (dir != Vector3.zero)
+    {
+      dir.y = 0;
+      transform.forward = Vector3.Lerp(transform.forward, dir, TURN_SPEED);
+    }
+  }
+
+  private void MoveLane(bool goingRight)
+  {
+    desiredLane += (goingRight) ? 1 : -1;
+    desiredLane = Mathf.Clamp(desiredLane, 0, 2);
+  }
+  private void StartSliding()
+  {
+    ch_animator.SetBool("squat", true);
+    ch_controller.height /= 2;
+    ch_controller.center = new Vector3(ch_controller.center.x, ch_controller.center.y / 2, ch_controller.center.z);
+  }
+  private void StopSliding()
+  {
+    ch_animator.SetBool("squat", false);
+    ch_controller.height *= 2;
+    ch_controller.center = new Vector3(ch_controller.center.x, ch_controller.center.y * 2, ch_controller.center.z);
   }
 
   #region Collision and Triggers
-  private void OnCollisionEnter(Collision other)
+  private void OnControllerColliderHit(ControllerColliderHit hit)
   {
-    if (other.gameObject.CompareTag("Ground"))
+    if (hit.gameObject.CompareTag("Ground"))
     {
-      isGrounded = true;
-      Jump.Emit(20);
+      //isGrounded = true;
+      //Jump.Emit(20);
     }
-    if (other.gameObject.CompareTag("Barrier"))
+    if (hit.gameObject.CompareTag("Barrier"))
     {
       GameManager.Loss(true, false, 0);
     }
@@ -86,5 +135,6 @@ public class PlayerController : MonoBehaviour
     }
   }
   #endregion
+
 }
 

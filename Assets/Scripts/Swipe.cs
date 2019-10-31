@@ -57,7 +57,7 @@ public class Swipe : MonoBehaviour
     }
 
     /* Did we cross the deadzone? */
-    if (swipeDelta.magnitude > 125)
+    if (swipeDelta.magnitude > 100)
     {
       //Which direction?
       float x = swipeDelta.x;
