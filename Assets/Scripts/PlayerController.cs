@@ -2,7 +2,7 @@
 
 public class PlayerController : MonoBehaviour
 {
-  private const float LANE_DISTANCE = 3.0f;
+  private const float LANE_DISTANCE = 2.0f;
   private const float TURN_SPEED = 0.5f;
 
   // Movement
@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
   private float verticalVelocity;
   private float speed = 10.0f;
   private int desiredLane = 1; // 0 - Left, 1 = Middle, 2 - Right
+  public static bool isGameStart = false;
 
   public ParticleSystem Score;
   public ParticleSystem Jump;
@@ -27,69 +28,76 @@ public class PlayerController : MonoBehaviour
 
   private void Update()
   {
-    #region Inputs
-    if (!GameManager.isPaused)
-    {
-      ch_animator.SetBool("squat", false);
-      ch_animator.SetBool("jump", false);
-
-      if (Input.GetKeyDown(KeyCode.LeftArrow) || swipeControls.SwipeLeft)
-      {
-        MoveLane(false);
-      }
-      if (Input.GetKeyDown(KeyCode.RightArrow) || swipeControls.SwipeRight)
-      {
-        MoveLane(true);
-      }
-    }
+    ch_animator.SetBool("run", false);
     if (swipeControls.Tap)
     {
-      Debug.Log("Tap!");
+      isGameStart = true;
     }
-    #endregion
 
-    #region Movement params
-    Vector3 targetPosition = transform.position.x * Vector3.forward;
-    if (desiredLane == 0)
-      targetPosition += Vector3.left * LANE_DISTANCE;
-    else if (desiredLane == 2)
-      targetPosition += Vector3.right * LANE_DISTANCE;
+    if (isGameStart)
+    {
+      ch_animator.SetBool("run", true);
 
-    Vector3 moveVector = Vector3.zero;
-    moveVector.x = (targetPosition - transform.position).x * 10.0f;
-    if (ch_controller.isGrounded)
-    {
-      verticalVelocity = -0.1f;
-      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
+      #region Inputs
+      if (!GameManager.isPaused)
       {
-        verticalVelocity = jumpForce;
-        ch_animator.SetBool("jump", true);
-      }
-      else if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
-      {
-        StartSliding();
-        Invoke("StopSliding", 1.0f);
-      }
-    }
-    else
-    {
-      verticalVelocity -= (gravity * Time.deltaTime);
-      if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
-      {
-        verticalVelocity = -jumpForce;
-      }
-    }
-    moveVector.y = verticalVelocity;
-    moveVector.z = speed;
-    #endregion
+        ch_animator.SetBool("squat", false);
+        ch_animator.SetBool("jump", false);
 
-    // Movement
-    ch_controller.Move(moveVector * Time.deltaTime);
-    Vector3 dir = ch_controller.velocity;
-    if (dir != Vector3.zero)
-    {
-      dir.y = 0;
-      transform.forward = Vector3.Lerp(transform.forward, dir, TURN_SPEED);
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || swipeControls.SwipeLeft)
+        {
+          MoveLane(false);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow) || swipeControls.SwipeRight)
+        {
+          MoveLane(true);
+        }
+      }
+      if (swipeControls.Tap)
+      {
+        Debug.Log("Tap!");
+      }
+      #endregion
+
+      #region Movement params
+      Vector3 targetPosition = transform.position.x * Vector3.forward;
+      if (desiredLane == 0)
+        targetPosition += Vector3.left * LANE_DISTANCE;
+      else if (desiredLane == 2)
+        targetPosition += Vector3.right * LANE_DISTANCE;
+
+      Vector3 moveVector = Vector3.zero;
+      moveVector.x = (targetPosition - transform.position).x * 10.0f;
+      if (ch_controller.isGrounded)
+      {
+        verticalVelocity = -0.1f;
+        if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
+        {
+          verticalVelocity = jumpForce;
+          ch_animator.SetBool("jump", true);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
+        {
+          StartSliding();
+          Invoke("StopSliding", 1.0f);
+        }
+      }
+      else
+      {
+        verticalVelocity -= (gravity * Time.deltaTime);
+      }
+      moveVector.y = verticalVelocity;
+      moveVector.z = speed;
+      #endregion
+
+      // Movement
+      ch_controller.Move(moveVector * Time.deltaTime);
+      Vector3 dir = ch_controller.velocity;
+      if (dir != Vector3.zero)
+      {
+        dir.y = 0;
+        transform.forward = Vector3.Lerp(transform.forward, dir, TURN_SPEED);
+      }
     }
   }
 
@@ -116,7 +124,6 @@ public class PlayerController : MonoBehaviour
   {
     if (hit.gameObject.CompareTag("Ground"))
     {
-      //isGrounded = true;
       //Jump.Emit(20);
     }
     if (hit.gameObject.CompareTag("Barrier"))

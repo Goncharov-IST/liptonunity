@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
   void Update()
   {
-    // FPS count
+    #region FPS Count
     frameCount++;
     dt += Time.deltaTime;
     if (dt > 1.0f / updateRate)
@@ -47,10 +47,14 @@ public class GameManager : MonoBehaviour
       dt -= 1.0f / updateRate;
       FPS.text = fps.ToString("0");
     }
+    #endregion
 
-    score.text = countBottle.ToString();
-    countMileage += 2 * Time.deltaTime;
-    mileage.text = countMileage.ToString("0");
+    if (PlayerController.isGameStart)
+    {
+      score.text = countBottle.ToString();
+      countMileage += 2 * Time.deltaTime;
+      mileage.text = countMileage.ToString("0");
+    }
   }
 
   public void ReplyLevel()
