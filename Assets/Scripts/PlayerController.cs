@@ -6,15 +6,17 @@ public class PlayerController : MonoBehaviour
   private const float TURN_SPEED = 0.5f;
 
   // Movement
-  public float jumpForce = 4.0f;
-  private float gravity = 10.0f;
+  private float jumpForce = 6.0f;
+  private float gravity = 15.0f;
   private float verticalVelocity;
-  private float speed = 10.0f;
+  private float speed = 9.0f;
   private int desiredLane = 1; // 0 - Left, 1 = Middle, 2 - Right
   public static bool isGameStart = false;
 
   public ParticleSystem Score;
   public ParticleSystem Jump;
+  public ParticleSystem Run;
+
 
   private Animator ch_animator;
   private CharacterController ch_controller;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
   private void Start()
   {
+    Run.Pause();
     ch_controller = GetComponent<CharacterController>();
     ch_animator = GetComponent<Animator>();
   }
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     if (isGameStart)
     {
+
       ch_animator.SetBool("run", true);
 
       #region Inputs
@@ -70,6 +74,7 @@ public class PlayerController : MonoBehaviour
       moveVector.x = (targetPosition - transform.position).x * 10.0f;
       if (ch_controller.isGrounded)
       {
+        Run.Play();
         verticalVelocity = -0.1f;
         if (Input.GetKeyDown(KeyCode.UpArrow) || swipeControls.SwipeUp)
         {
@@ -79,11 +84,13 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
         {
           StartSliding();
-          Invoke("StopSliding", 1.0f);
+          Invoke("StopSliding", 0.8f);
         }
       }
       else
       {
+        Run.Clear();
+        Run.Pause();
         verticalVelocity -= (gravity * Time.deltaTime);
       }
       moveVector.y = verticalVelocity;
@@ -124,7 +131,7 @@ public class PlayerController : MonoBehaviour
   {
     if (hit.gameObject.CompareTag("Ground"))
     {
-      //Jump.Emit(20);
+      //Run.Play();
     }
     if (hit.gameObject.CompareTag("Barrier"))
     {
