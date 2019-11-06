@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
       }
       #endregion
 
-      #region Movement params
+      #region Movement
       Vector3 targetPosition = transform.position.x * Vector3.forward;
       if (desiredLane == 0)
         targetPosition += Vector3.left * LANE_DISTANCE;
@@ -91,13 +91,19 @@ public class PlayerController : MonoBehaviour
         Run.Clear();
         Run.Pause();
         verticalVelocity -= (gravity * Time.deltaTime);
+        // Fast falling mechanic
+        if (Input.GetKeyDown(KeyCode.DownArrow) || swipeControls.SwipeDown)
+        {
+          verticalVelocity = -jumpForce;
+        }
       }
       moveVector.y = verticalVelocity;
       moveVector.z = speed;
       #endregion
 
-      // Movement
+      // Move character
       ch_controller.Move(moveVector * Time.deltaTime);
+      // Rotate character to where is going
       Vector3 dir = ch_controller.velocity;
       if (dir != Vector3.zero)
       {
