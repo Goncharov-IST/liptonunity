@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
   public ParticleSystem Jump;
   public ParticleSystem Run;
 
-
   private Animator ch_animator;
   private CharacterController ch_controller;
   public Swipe swipeControls;
