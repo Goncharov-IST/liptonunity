@@ -25,8 +25,8 @@ public class SpawnRoadPart : MonoBehaviour
   {
     if (col.CompareTag("Player"))
     {
-      Destroy(gameObject, .8f);
-      Destroy(transform.parent.gameObject, .8f);
+      Destroy(gameObject, .6f);
+      Destroy(transform.parent.gameObject, .6f);
     }
   }
 }

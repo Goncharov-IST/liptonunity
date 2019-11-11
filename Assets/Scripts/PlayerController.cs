@@ -6,10 +6,10 @@ public class PlayerController : MonoBehaviour
   private const float TURN_SPEED = 0.5f;
 
   // Movement
-  private float jumpForce = 6.0f;
-  private float gravity = 15.0f;
+  private float jumpForce = 7.0f;
+  private float gravity = 18.0f;
   private float verticalVelocity;
-  private float speed = 9.0f;
+  private float speed = 7.0f;
   private int desiredLane = 1; // 0 - Left, 1 = Middle, 2 - Right
   public static bool isGameStart = false;
 
