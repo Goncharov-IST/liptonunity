@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
 
     if (isGameStart)
     {
-
       ch_animator.SetBool("run", true);
 
       #region Inputs
@@ -55,10 +54,6 @@ public class PlayerController : MonoBehaviour
         {
           MoveLane(true);
         }
-      }
-      if (swipeControls.Tap)
-      {
-        Debug.Log("Tap!");
       }
       #endregion
 

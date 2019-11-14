@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+//using Wowmaking.RNU;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour//, IRNCommandsReceiver
 {
   public GameObject pauseLink;
   public GameObject resumeButton;
@@ -22,12 +23,38 @@ public class GameManager : MonoBehaviour
   private float fps = 0.0f;
   private float updateRate = 4.0f;  // 4 updates per sec.
 
+  #region React Command Receiver
+  /* private void Awake()
+  {
+    RNBridge.SetCommandsReceiver(this);
+  }
+
+  public void HandleCommand(RNCommand command)
+  {
+    switch (command.name)
+    {
+      case "resolve_command":
+        command.Resolve(new
+        {
+          a = "test_data",
+          b = 123,
+        });
+        break;
+
+      case "reject_command":
+        command.Reject(new
+        {
+          error = "test_data error",
+        });
+        break;
+    }
+    appendToText("Command ID: " + command.id.ToString());
+    appendToText("Command Name: " + command.name);
+  } */
+  #endregion
+
   void Start()
   {
-    //Screen.SetResolution(Screen.width, Screen.height, false);
-    //QualitySettings.vSyncCount = 0;
-    //Application.targetFrameRate = 60;
-
     pause = pauseLink;
     resume = resumeButton;
 
@@ -87,6 +114,7 @@ public class GameManager : MonoBehaviour
   }
   public void ExitGame()
   {
+
     Application.Quit();
   }
 }
