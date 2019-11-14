@@ -165,7 +165,9 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.atoms.liptonrun
-  buildNumber: {}
+    iPhone: com.atoms.liptonrun
+  buildNumber:
+    iPhone: 1
   AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0

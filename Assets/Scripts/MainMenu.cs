@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
   public void StartGame()
   {
-    SceneManager.LoadScene(1);
+    GameManager.StartGame();
   }
 
   public void ExitGame()
   {
-    Application.Quit();
+    GameManager.ExitGame();
   }
 }

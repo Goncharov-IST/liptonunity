@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-//using Wowmaking.RNU;
+//using Wowmaking.RNU; // if installed react-native-unity package
 
 public class GameManager : MonoBehaviour//, IRNCommandsReceiver
 {
@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
         });
         break;
     }
-    appendToText("Command ID: " + command.id.ToString());
-    appendToText("Command Name: " + command.name);
   } */
   #endregion
 
@@ -112,9 +110,21 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
     Time.timeScale = 1;
     pauseLink.SetActive(false);
   }
-  public void ExitGame()
-  {
 
+  public static void StartGame()
+  {
+    SceneManager.LoadScene(1);
+  }
+
+  public static void ExitGame()
+  {
+    //SendEvent("game_unity", new { type = "quit", })
+    Application.Quit();
+  }
+
+  public void ExitGameLevel()
+  {
+    //SendEvent("game_unity", new { type = "quit", })
     Application.Quit();
   }
 }
