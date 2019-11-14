@@ -1,2 +1,7 @@
-# liptonunity
-Game on Unity 2019.2.9f1
+# Lipton Run Game on Unity
+
+version: 2019.3.0b10
+
+### Events:
+
+`SendEvent("game_unity", new { type = "quit", })`
