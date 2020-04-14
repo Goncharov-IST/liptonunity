@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 //using Wowmaking.RNU; // if installed react-native-unity package
 
-public class GameManager : MonoBehaviour//, IRNCommandsReceiver
+public class GameManager : MonoBehaviour //, IRNCommandsReceiver
 {
   public GameObject pauseLink;
   public GameObject resumeButton;
@@ -21,9 +22,10 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
   private int frameCount = 0;
   private float dt = 0.0f;
   private float fps = 0.0f;
-  private float updateRate = 4.0f;  // 4 updates per sec.
+  private float updateRate = 4.0f; // 4 updates per sec.
 
   #region React Command Receiver
+
   /* private void Awake()
   {
     RNBridge.SetCommandsReceiver(this);
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
         break;
     }
   } */
+
   #endregion
 
   void Start()
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
   void Update()
   {
     #region FPS Count
+
     frameCount++;
     dt += Time.deltaTime;
     if (dt > 1.0f / updateRate)
@@ -72,6 +76,7 @@ public class GameManager : MonoBehaviour//, IRNCommandsReceiver
       dt -= 1.0f / updateRate;
       FPS.text = fps.ToString("0");
     }
+
     #endregion
 
     if (PlayerController.isGameStart)
